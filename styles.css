@@ -98,8 +98,27 @@ h1, h2, h3 {
   gap: 14px;
   margin-bottom: 14px;
 }
-.cta-note {
+.cta-reassure {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
   font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  margin: 0 0 6px;
+  max-width: 540px;
+}
+.cta-reassure .shield { font-size: 16px; }
+.cta-reassure a {
+  text-decoration: none;
+  border-bottom: 2px solid var(--ink);
+  font-weight: 600;
+}
+.cta-reassure a:hover { color: var(--alert); border-color: var(--alert); }
+
+.cta-note {
+  font-size: 13px;
   color: var(--ink-soft);
   margin: 0;
 }
@@ -248,6 +267,27 @@ h1, h2, h3 {
 .clip-title { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: 22px; line-height: 1.05; }
 .clip-teaser { font-size: 14px; color: var(--ink-soft); margin: 0; }
 .clip-card.playing .clip-teaser { color: var(--paper); opacity: 0.9; }
+
+/* ---------- faq ---------- */
+.faq {
+  background: var(--cream-deep);
+  border-top: 3px solid var(--ink);
+  border-bottom: 3px solid var(--ink);
+  padding: 80px 32px;
+}
+.faq-inner { max-width: 1000px; margin: 0 auto; }
+.faq h2 { font-size: clamp(36px, 4.5vw, 56px); margin: 0 0 40px; }
+.faq-list { display: flex; flex-direction: column; gap: 18px; }
+.faq-item {
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 16px;
+  padding: 24px 28px;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.faq-item h3 { font-size: 24px; margin: 0 0 8px; }
+.faq-item p { margin: 0; color: var(--ink-soft); }
+.faq-item code { background: var(--cream-deep); padding: 1px 6px; border-radius: 4px; font-size: 0.9em; }
 
 /* ---------- signup ---------- */
 .signup {

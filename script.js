@@ -19,30 +19,44 @@ const CLIPS = [
 
 const audio = document.getElementById("audio-player");
 const grid = document.getElementById("clip-grid");
+const heroBtn = document.getElementById("hero-play");
 let currentCard = null;
+let heroPlaying = false;
 
-function stopCurrent() {
+function resetHero() {
+  heroPlaying = false;
+  heroBtn.innerHTML = '<span class="btn-icon">▶</span> Hear a clip';
+}
+function resetCard() {
   if (!currentCard) return;
   currentCard.classList.remove("playing");
   currentCard.querySelector(".play-icon").textContent = "▶";
   currentCard = null;
 }
+function stopAll() {
+  audio.pause();
+  resetHero();
+  resetCard();
+}
+
+function playFile(file) {
+  audio.src = `clips/${file}`;
+  audio.play().catch(() => {});
+}
 
 function playClip(card, file) {
   if (currentCard === card) {
-    audio.pause();
-    stopCurrent();
+    stopAll();
     return;
   }
-  stopCurrent();
-  audio.src = `clips/${file}`;
-  audio.play().catch(() => {});
+  stopAll();
+  playFile(file);
   card.classList.add("playing");
   card.querySelector(".play-icon").textContent = "■";
   currentCard = card;
 }
 
-audio.addEventListener("ended", stopCurrent);
+audio.addEventListener("ended", stopAll);
 
 CLIPS.forEach((clip) => {
   const card = document.createElement("button");
@@ -61,12 +75,16 @@ CLIPS.forEach((clip) => {
   grid.appendChild(card);
 });
 
-document.getElementById("hero-play").addEventListener("click", () => {
-  const cards = grid.querySelectorAll(".clip-card");
-  if (!cards.length) return;
-  const random = cards[Math.floor(Math.random() * cards.length)];
-  random.scrollIntoView({ behavior: "smooth", block: "center" });
-  random.click();
+heroBtn.addEventListener("click", () => {
+  if (heroPlaying) {
+    stopAll();
+    return;
+  }
+  stopAll();
+  const random = CLIPS[Math.floor(Math.random() * CLIPS.length)];
+  playFile(random.file);
+  heroBtn.innerHTML = '<span class="btn-icon">■</span> Stop yelling';
+  heroPlaying = true;
 });
 
 // TODO: wire to a real backend (Buttondown / Vercel function / etc.) before launch.
