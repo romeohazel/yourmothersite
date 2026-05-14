@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Privacy — YourMother</title>
+  <meta name="description" content="Privacy policy for the YourMother Chrome extension." />
+  <link rel="icon" type="image/png" href="img/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .legal { max-width: 760px; margin: 0 auto; padding: 40px 32px 80px; }
+    .legal h1 { font-size: clamp(40px, 5vw, 64px); margin-bottom: 8px; }
+    .legal .effective { color: var(--ink-soft); margin: 0 0 32px; font-weight: 600; }
+    .legal h2 { font-size: 24px; margin: 36px 0 12px; }
+    .legal p, .legal li { color: var(--ink); }
+    .legal ul { padding-left: 20px; }
+    .legal li { margin-bottom: 6px; }
+    .legal a { color: var(--alert); }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <a href="/" class="wordmark">YourMother</a>
+    <nav class="nav-links">
+      <a href="/#how">How it works</a>
+      <a href="/#clips">The clips</a>
+      <a href="https://github.com/romeohazel/yourmother" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </header>
+
+  <main class="legal">
+    <h1>Privacy Policy</h1>
+    <p class="effective">Effective: May 14, 2026</p>
+
+    <p>YourMother is a Chrome extension that plays a voice clip when you switch to a tab outside your approved-sites list. This policy explains what the extension does and doesn't do with your data.</p>
+
+    <h2>Short version</h2>
+    <p>Nothing leaves your computer. We don't collect, store, or transmit any of your data. We have no servers, no accounts, no analytics. Your mom does, though.</p>
+
+    <h2>What gets stored on your device</h2>
+    <p>The extension stores two things in your browser's built-in local storage (<code>chrome.storage.local</code>):</p>
+    <ul>
+      <li>The list of websites you've added as "approved" sites</li>
+      <li>Whether the extension is currently on or off</li>
+    </ul>
+    <p>This data is stored only in your browser, on your computer. It is not transmitted anywhere, not shared with us, and not shared with any third party. Uninstalling the extension deletes it.</p>
+
+    <h2>What the extension reads</h2>
+    <p>To detect when you switch to a non-approved tab, the extension reads:</p>
+    <ul>
+      <li>The URL of your currently active browser tab (specifically, the domain — e.g. <code>github.com</code>)</li>
+      <li>When you switch between tabs</li>
+    </ul>
+    <p>The active tab's domain is used <strong>only</strong> for a local comparison against your approved-sites list. It is never logged, stored, or transmitted off your computer.</p>
+
+    <h2>What we don't do</h2>
+    <ul>
+      <li>We don't collect personal information.</li>
+      <li>We don't track your browsing history.</li>
+      <li>We don't use analytics or telemetry.</li>
+      <li>We don't show ads.</li>
+      <li>We don't sell, share, or transfer data to any third party.</li>
+      <li>We don't require an account.</li>
+    </ul>
+
+    <h2>Audio clips</h2>
+    <p>All voice clips ship bundled inside the extension as static <code>.mp3</code> files. No audio is streamed from any server, and no network request is made when a clip plays.</p>
+
+    <h2>Permissions explained</h2>
+    <ul>
+      <li><strong><code>tabs</code></strong> — to detect when you switch tabs and read the active tab's domain.</li>
+      <li><strong><code>offscreen</code></strong> — required by Chrome to play audio from a Manifest V3 extension.</li>
+      <li><strong><code>storage</code></strong> — to save your approved-sites list and on/off toggle locally.</li>
+    </ul>
+
+    <h2>Contact</h2>
+    <p>Questions, complaints, or feedback: open an issue at <a href="https://github.com/romeohazel/yourmother/issues">github.com/romeohazel/yourmother/issues</a>.</p>
+
+    <h2>Changes</h2>
+    <p>If this policy changes, the updated version will appear at this URL with a new effective date.</p>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="img/icon.png" alt="" width="32" height="32" />
+        <span>YourMother</span>
+      </div>
+      <nav class="footer-links">
+        <a href="privacy.html">Privacy</a>
+        <a href="https://github.com/romeohazel/yourmother" target="_blank" rel="noopener">GitHub</a>
+        <a href="mailto:romeobrwn06@gmail.com">Contact</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
