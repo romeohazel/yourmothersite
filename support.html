@@ -156,7 +156,11 @@
       const subject = form.subject.value.trim();
       const message = form.message.value.trim();
 
-      if (!category || !subject || !message) return;
+      if (!category || !subject || !message) {
+        errorEl.textContent = !category ? 'Please pick a category.' : 'Please fill in all fields.';
+        errorEl.hidden = false;
+        return;
+      }
 
       btn.disabled = true;
       btn.textContent = 'Sending...';
