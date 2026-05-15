@@ -114,14 +114,30 @@
 
     const CATEGORY_LABELS = { bug: '🐛 Bug', feature: '💡 Feature', question: '❓ Question', yell: '😤 Yell back' };
 
+    const TRASH_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>`;
+
+    function getMyIds() {
+      try { return JSON.parse(localStorage.getItem('ym_my_ids') || '[]'); } catch { return []; }
+    }
+    function saveMyId(id) {
+      const ids = getMyIds();
+      ids.push(id);
+      localStorage.setItem('ym_my_ids', JSON.stringify(ids));
+    }
+    function removeMyId(id) {
+      localStorage.setItem('ym_my_ids', JSON.stringify(getMyIds().filter(i => i !== id)));
+    }
+
     function renderFeed(items) {
       const list = document.getElementById('feed-list');
       if (!items.length) {
         list.innerHTML = '<p class="feed-empty">Nothing here yet. Be the first.</p>';
         return;
       }
+      const myIds = getMyIds();
       list.innerHTML = items.map(item => `
         <div class="feed-item">
+          ${myIds.includes(item.id) ? `<button class="feed-delete" data-id="${escapeHtml(item.id)}" title="Delete">${TRASH_ICON}</button>` : ''}
           <div class="feed-meta">
             <span class="feed-badge feed-badge--${escapeHtml(item.category)}">${CATEGORY_LABELS[item.category] || item.category}</span>
             <span class="feed-time">${timeAgo(item.created_at)}</span>
@@ -141,6 +157,16 @@
         document.getElementById('feed-list').innerHTML = '<p class="feed-empty">Couldn\'t load submissions right now.</p>';
       }
     }
+
+    document.getElementById('feed-list').addEventListener('click', async (e) => {
+      const btn = e.target.closest('.feed-delete');
+      if (!btn) return;
+      const id = btn.dataset.id;
+      btn.disabled = true;
+      await fetch(URL + '?id=eq.' + id, { method: 'DELETE', headers: HEADERS });
+      removeMyId(id);
+      loadFeed();
+    });
 
     document.getElementById('support-form').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -168,10 +194,12 @@
       try {
         const res = await fetch(URL, {
           method: 'POST',
-          headers: { ...HEADERS, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+          headers: { ...HEADERS, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
           body: JSON.stringify({ category, subject, message })
         });
         if (!res.ok) throw new Error();
+        const [created] = await res.json();
+        saveMyId(created.id);
         form.reset();
         successEl.hidden = false;
         loadFeed();

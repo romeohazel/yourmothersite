@@ -407,6 +407,7 @@ h1, h2, h3 {
 .feed-loading { color: var(--ink-soft); }
 .feed-empty { color: var(--ink-soft); font-style: italic; }
 .feed-item {
+  position: relative;
   background: var(--paper);
   border: 3px solid var(--ink);
   border-radius: 16px;
@@ -414,6 +415,23 @@ h1, h2, h3 {
   box-shadow: 4px 4px 0 var(--ink);
   margin-bottom: 16px;
 }
+.feed-delete {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--ink-soft);
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.1s, background 0.1s;
+}
+.feed-delete:hover { color: var(--alert); background: var(--cream-deep); }
+.feed-delete:disabled { opacity: 0.4; cursor: not-allowed; }
 .feed-meta {
   display: flex;
   align-items: center;
