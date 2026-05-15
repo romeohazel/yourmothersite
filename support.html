@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Support — YourMother</title>
+  <meta name="description" content="Found a bug? Have a feature idea? Just want to yell back? Drop it here." />
+
+  <link rel="icon" type="image/png" href="img/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header class="nav">
+    <a href="/" class="wordmark">YourMother</a>
+    <nav class="nav-links">
+      <a href="/#how">How it works</a>
+      <a href="/#clips">The clips</a>
+      <a href="https://github.com/romeohazel/yourmother" target="_blank" rel="noopener">GitHub</a>
+      <a href="support.html" class="nav-active">Support</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <section class="support-hero">
+      <div class="eyebrow">💬 Support board</div>
+      <h1>Say something.</h1>
+      <p class="lede">Found a bug? Have a feature idea? Just want to yell back? Drop it here. No account, no login — just say what you want.</p>
+    </section>
+
+    <section class="support-layout">
+
+      <div class="support-form-wrap">
+        <h2>Submit</h2>
+        <form id="support-form" novalidate>
+          <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category" name="category" required>
+              <option value="">Pick one</option>
+              <option value="bug">🐛 Bug report</option>
+              <option value="feature">💡 Feature request</option>
+              <option value="question">❓ Question</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="subject">Subject</label>
+            <input id="subject" name="subject" type="text" placeholder="One line summary" required maxlength="120" />
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Tell us more..." required rows="6" maxlength="2000"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" id="submit-btn">Submit</button>
+        </form>
+        <p class="support-success" id="support-success" hidden>Got it. We'll take a look. 👀</p>
+        <p class="support-error" id="support-error" hidden>Something went wrong. Try again?</p>
+      </div>
+
+      <div class="support-feed">
+        <h2>The board</h2>
+        <div id="feed-list">
+          <p class="feed-loading">Loading...</p>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="img/icon.png" alt="" width="32" height="32" />
+        <span>YourMother</span>
+      </div>
+      <nav class="footer-links">
+        <a href="privacy.html">Privacy</a>
+        <a href="https://github.com/romeohazel/yourmother" target="_blank" rel="noopener">GitHub</a>
+        <a href="support.html">Support</a>
+        <a href="mailto:romeobrwn06@gmail.com">Contact</a>
+      </nav>
+      <p class="footer-fineprint">Built by a son who was procrastinating. © <span id="year"></span></p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const URL = 'https://jntivdupaszxxmhfkyiz.supabase.co/rest/v1/submissions';
+    const KEY = 'sb_publishable_PxgfgZtz9dP5TzjH736XRw_9IIclPT_';
+    const HEADERS = { 'apikey': KEY, 'Authorization': 'Bearer ' + KEY };
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function timeAgo(iso) {
+      const diff = (Date.now() - new Date(iso)) / 1000;
+      if (diff < 60) return 'just now';
+      if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+      if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+      if (diff < 86400 * 30) return Math.floor(diff / 86400) + 'd ago';
+      return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    }
+
+    const CATEGORY_LABELS = { bug: '🐛 Bug', feature: '💡 Feature', question: '❓ Question' };
+
+    function renderFeed(items) {
+      const list = document.getElementById('feed-list');
+      if (!items.length) {
+        list.innerHTML = '<p class="feed-empty">Nothing here yet. Be the first.</p>';
+        return;
+      }
+      list.innerHTML = items.map(item => `
+        <div class="feed-item">
+          <div class="feed-meta">
+            <span class="feed-badge feed-badge--${escapeHtml(item.category)}">${CATEGORY_LABELS[item.category] || item.category}</span>
+            <span class="feed-time">${timeAgo(item.created_at)}</span>
+          </div>
+          <p class="feed-subject">${escapeHtml(item.subject)}</p>
+          <p class="feed-message">${escapeHtml(item.message)}</p>
+        </div>
+      `).join('');
+    }
+
+    async function loadFeed() {
+      try {
+        const res = await fetch(URL + '?order=created_at.desc&select=*', { headers: HEADERS });
+        if (!res.ok) throw new Error();
+        renderFeed(await res.json());
+      } catch {
+        document.getElementById('feed-list').innerHTML = '<p class="feed-empty">Couldn\'t load submissions right now.</p>';
+      }
+    }
+
+    document.getElementById('support-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const btn = document.getElementById('submit-btn');
+      const successEl = document.getElementById('support-success');
+      const errorEl = document.getElementById('support-error');
+
+      successEl.hidden = true;
+      errorEl.hidden = true;
+
+      const category = form.category.value;
+      const subject = form.subject.value.trim();
+      const message = form.message.value.trim();
+
+      if (!category || !subject || !message) return;
+
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+
+      try {
+        const res = await fetch(URL, {
+          method: 'POST',
+          headers: { ...HEADERS, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+          body: JSON.stringify({ category, subject, message })
+        });
+        if (!res.ok) throw new Error();
+        form.reset();
+        successEl.hidden = false;
+        loadFeed();
+      } catch {
+        errorEl.hidden = false;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Submit';
+      }
+    });
+
+    loadFeed();
+  </script>
+</body>
+</html>
