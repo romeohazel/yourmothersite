@@ -44,6 +44,7 @@
               <option value="bug">Bug report</option>
               <option value="feature">Feature request</option>
               <option value="question">Question</option>
+              <option value="yell">Yell back</option>
             </select>
           </div>
           <div class="form-group">
@@ -111,7 +112,7 @@
       return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     }
 
-    const CATEGORY_LABELS = { bug: '🐛 Bug', feature: '💡 Feature', question: '❓ Question' };
+    const CATEGORY_LABELS = { bug: '🐛 Bug', feature: '💡 Feature', question: '❓ Question', yell: '😤 Yell back' };
 
     function renderFeed(items) {
       const list = document.getElementById('feed-list');

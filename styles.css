@@ -432,6 +432,7 @@ h1, h2, h3 {
 .feed-badge--bug { background: var(--alert); color: var(--paper); }
 .feed-badge--feature { background: #2563eb; color: #fff; }
 .feed-badge--question { background: #16a34a; color: #fff; }
+.feed-badge--yell { background: var(--ink); color: var(--paper); }
 .feed-time { font-size: 13px; color: var(--ink-soft); }
 .feed-subject { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: 20px; line-height: 1.1; margin: 0 0 8px; }
 .feed-message { font-size: 16px; color: var(--ink-soft); margin: 0; white-space: pre-wrap; word-break: break-word; }
