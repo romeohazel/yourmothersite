@@ -451,10 +451,14 @@ h1, h2, h3 {
 @media (max-width: 540px) {
   body { font-size: 17px; }
   .nav { padding: 16px 20px; }
-  .nav-links { gap: 14px; font-size: 14px; }
-  .hero { padding: 20px 20px 50px; }
+  .nav-links { gap: 12px; font-size: 13px; }
+  .nav-links a:first-child { display: none; } /* "How it works" is too wide — drops to 3 links */
+  .hero { padding: 16px 20px 56px; gap: 28px; }
+  .hero-art { margin-top: 14px; } /* room for the sticker above the image */
+  .hero h1 { font-size: 40px; }
   .hero h1 br { display: none; }
-  .how, .clips, .signup { padding-left: 20px; padding-right: 20px; padding-top: 60px; padding-bottom: 60px; }
+  .lede { font-size: 18px; }
+  .how, .clips { padding-left: 20px; padding-right: 20px; padding-top: 60px; padding-bottom: 60px; }
   .clip-grid { grid-template-columns: 1fr; }
   .footer { padding: 30px 20px; }
 }
